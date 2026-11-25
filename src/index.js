@@ -69,4 +69,13 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-await client.login(process.env.BOT_TOKEN);
+try {
+  await client.login(process.env.BOT_TOKEN);
+} catch (error) {
+  if (error?.code === 'TokenInvalid') {
+    console.error('رمز BOT_TOKEN غير صالح. حدّثه في ملف .env من Discord Developer Portal.');
+  } else {
+    console.error('تعذر تسجيل دخول البوت إلى Discord:', error);
+  }
+  process.exitCode = 1;
+}
